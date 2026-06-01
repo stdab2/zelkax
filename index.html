@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ZELKAX — Automatisation & IA</title>
+<meta name="description" content="ZELKAX conçoit des systèmes d'automatisation et d'IA sur mesure pour les professionnels et PME québécoises."/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
+<link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07070C;
+  --s1:#0D0D18;
+  --s2:#131322;
+  --bd:#1B1B28;
+  --bd2:#2D2D42;
+  --ac:#AEFF47;
+  --ac-f:rgba(174,255,71,.08);
+  --tx:#DEDAD2;
+  --m:#6A6A7C;
+  --d:#2C2C3A;
+  --F:'Syne',sans-serif;
+  --B:'DM Sans',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:var(--B);font-weight:300;line-height:1.65;overflow-x:hidden}
+
+/* GRAIN */
+body::before{
+  content:'';position:fixed;inset:0;z-index:900;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.025;background-size:200px 200px
+}
+
+/* PROGRESS BAR */
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--ac);width:0%;z-index:200;transition:width .08s linear}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:66px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;
+  background:rgba(7,7,12,.75);
+  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s;
+  animation:fadeD .6s var(--ease) both
+}
+nav.on{border-bottom-color:var(--bd)}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none}
+.logo-mark{width:22px;height:22px;flex-shrink:0}
+.logo-word{font-family:var(--F);font-weight:800;font-size:1rem;letter-spacing:.22em;color:var(--tx)}
+.nav-ul{display:flex;align-items:center;gap:40px;list-style:none}
+.nav-ul a{font-size:.8rem;font-weight:400;letter-spacing:.03em;color:var(--m);text-decoration:none;transition:color .2s}
+.nav-ul a:hover{color:var(--tx)}
+.ncta{
+  font-family:var(--F)!important;font-size:.75rem!important;font-weight:700!important;
+  letter-spacing:.08em!important;color:var(--bg)!important;
+  background:var(--ac);padding:9px 20px;border-radius:3px;
+  transition:opacity .2s!important
+}
+.ncta:hover{opacity:.85}
+
+/* HERO */
+#hero{
+  min-height:100svh;display:flex;flex-direction:column;
+  justify-content:center;padding:0 52px;
+  position:relative;overflow:hidden;z-index:1
+}
+.blob{position:absolute;border-radius:50%;filter:blur(130px);pointer-events:none}
+.b1{width:700px;height:700px;background:rgba(174,255,71,.04);top:-180px;right:-140px;animation:pulse 9s ease-in-out infinite}
+.b2{width:450px;height:450px;background:rgba(80,80,220,.025);bottom:-100px;left:-100px;animation:pulse 12s ease-in-out infinite 3s}
+.hero-in{max-width:1140px;margin:0 auto;width:100%;padding-top:66px}
+.hero-tag{
+  font-family:var(--F);font-size:.66rem;font-weight:500;
+  letter-spacing:.3em;color:var(--ac);text-transform:uppercase;
+  display:flex;align-items:center;gap:14px;margin-bottom:38px;
+  opacity:0;animation:sU .6s var(--ease) .2s both
+}
+.hero-tag::before{content:'';width:26px;height:1px;background:var(--ac);flex-shrink:0}
+h1{
+  font-family:var(--F);font-weight:800;
+  font-size:clamp(3rem,7.5vw,5.8rem);
+  line-height:1.02;letter-spacing:-.025em;
+  color:var(--tx);margin-bottom:34px
+}
+.hl{display:block;overflow:hidden}
+.hi{display:block;opacity:0;animation:sU .75s var(--ease) both}
+.hl:nth-child(1) .hi{animation-delay:.4s}
+.hl:nth-child(2) .hi{animation-delay:.55s}
+.hl:nth-child(3) .hi{animation-delay:.7s;color:var(--ac)}
+.hero-sub{
+  font-size:1rem;font-weight:300;color:var(--m);
+  max-width:50ch;line-height:1.8;margin-bottom:52px;
+  opacity:0;animation:sU .6s var(--ease) .9s both
+}
+.acts{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:sU .6s var(--ease) 1.05s both}
+.bp{
+  font-family:var(--F);font-size:.8rem;font-weight:700;
+  letter-spacing:.05em;color:var(--bg);background:var(--ac);
+  padding:14px 28px;border-radius:3px;text-decoration:none;
+  transition:opacity .2s,transform .25s var(--ease)
+}
+.bp:hover{opacity:.87;transform:translateY(-2px)}
+.bg{
+  font-family:var(--F);font-size:.8rem;font-weight:500;
+  letter-spacing:.04em;color:var(--m);background:transparent;
+  padding:14px 28px;border-radius:3px;border:1px solid var(--bd);
+  text-decoration:none;transition:border-color .2s,color .2s
+}
+.bg:hover{border-color:var(--bd2);color:var(--tx)}
+.hero-scr{
+  position:absolute;bottom:40px;left:52px;
+  display:flex;align-items:center;gap:12px;
+  opacity:0;animation:fI .6s ease 1.6s both
+}
+.scr-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--ac),transparent);animation:sc 2s ease-in-out infinite}
+.hero-scr span{font-family:var(--F);font-size:.6rem;letter-spacing:.25em;color:var(--m);text-transform:uppercase;writing-mode:vertical-lr}
+
+/* SECTION SHARED */
+.sw{max-width:1140px;margin:0 auto}
+.eye{
+  font-family:var(--F);font-size:.63rem;font-weight:500;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--ac);
+  display:flex;align-items:center;gap:12px;margin-bottom:18px
+}
+.eye::before{content:'';width:18px;height:1px;background:var(--ac)}
+h2{
+  font-family:var(--F);font-weight:700;
+  font-size:clamp(1.85rem,3.5vw,2.75rem);
+  letter-spacing:-.022em;line-height:1.13;color:var(--tx)
+}
+
+/* SERVICES */
+#services{padding:120px 52px;position:relative;z-index:1}
+.sh{margin-bottom:60px}
+.sgrid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--bd);border-radius:6px;overflow:hidden
+}
+.sc{
+  padding:52px 44px;background:var(--bg);
+  border-right:1px solid var(--bd);
+  position:relative;overflow:hidden;
+  transition:background .3s var(--ease)
+}
+.sc:last-child{border-right:none}
+.sc::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--ac);transform:translateX(-101%);
+  transition:transform .45s var(--ease)
+}
+.sc:hover{background:var(--s1)}
+.sc:hover::after{transform:translateX(0)}
+.sc:hover .si{opacity:1;transform:translateY(-2px)}
+.sn{font-family:var(--F);font-size:1rem;font-weight:600;letter-spacing:.2em;color:var(--d);display:block;margin-bottom:48px}
+.si{width:34px;height:34px;color:var(--ac);margin-bottom:26px;opacity:.8;transition:opacity .3s,transform .3s var(--ease)}
+.st{font-family:var(--F);font-weight:700;font-size:1.02rem;letter-spacing:-.01em;color:var(--tx);margin-bottom:14px}
+.sd{font-size:.925rem;font-weight:300;color:var(--m);line-height:1.78}
+
+/* PROCESS */
+#process{padding:120px 52px;border-top:1px solid var(--bd);position:relative;z-index:1}
+.pg{display:grid;grid-template-columns:340px 1fr;gap:96px;align-items:start}
+.psticky{position:sticky;top:96px}
+.psteps{display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:68px 1fr;gap:20px;padding:36px 0;border-top:1px solid var(--bd)}
+.step:last-child{border-bottom:1px solid var(--bd)}
+.step:hover .pnum{color:var(--ac)}
+.pnum{font-family:var(--F);font-size:1rem;font-weight:600;letter-spacing:.2em;color:var(--d);padding-top:3px;transition:color .3s}
+.ptitle{font-family:var(--F);font-weight:700;font-size:.95rem;color:var(--tx);margin-bottom:10px;letter-spacing:-.01em}
+.pdesc{font-size:.925rem;font-weight:300;color:var(--m);line-height:1.78}
+
+/* ABOUT */
+#about{padding:120px 52px;border-top:1px solid var(--bd);position:relative;z-index:1}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center}
+.abody{font-size:1.02rem;font-weight:300;color:var(--m);line-height:1.85;margin-top:34px}
+.abody strong{color:var(--tx);font-weight:400}
+.pills{display:flex;flex-direction:column;gap:14px}
+.pill{
+  padding:26px 30px;background:var(--s1);
+  border:1px solid var(--bd);border-radius:5px;
+  transition:border-color .25s,background .25s
+}
+.pill:hover{border-color:var(--bd2);background:var(--s2)}
+.pname{font-family:var(--F);font-weight:700;font-size:.95rem;color:var(--tx);margin-bottom:5px;letter-spacing:-.01em}
+.pdsc{font-size:.925rem;font-weight:300;color:var(--m);line-height:1.6}
+
+/* CALENDAR */
+#cal{padding:120px 52px;border-top:1px solid var(--bd);position:relative;z-index:1}
+.calh{text-align:center;max-width:480px;margin:0 auto 68px}
+.caltitle{
+  font-family:var(--F);font-weight:800;
+  font-size:clamp(2.2rem,4.5vw,3.8rem);
+  letter-spacing:-.03em;line-height:1.08;color:var(--tx);margin-bottom:18px
+}
+.caltitle em{color:var(--ac);font-style:normal}
+.calsub{font-size:.9rem;font-weight:300;color:var(--m);line-height:1.78}
+.calwrap{
+  max-width:1140px;margin:0 auto;
+  border:1px solid var(--bd);border-radius:7px;
+  overflow:hidden;background:var(--s1);min-height:660px
+}
+#zelkax-cal{width:100%;min-height:660px}
+
+/* FOOTER */
+footer{padding:34px 52px;border-top:1px solid var(--bd);position:relative;z-index:1}
+.fi{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.flogo{
+  display:flex;align-items:center;gap:10px;text-decoration:none;
+  font-family:var(--F);font-weight:800;font-size:.88rem;
+  letter-spacing:.22em;color:var(--m);transition:color .2s
+}
+.flogo:hover{color:var(--tx)}
+.flogo svg{width:15px;height:15px}
+.fcopy{font-size:.72rem;color:var(--d);display:flex;align-items:center;gap:16px}
+.fpp{font-size:.72rem;color:var(--d);background:none;border:none;cursor:pointer;padding:0;transition:color .2s;font-family:inherit}
+.fpp:hover{color:var(--m)}
+.fsoc{
+  display:flex;align-items:center;gap:7px;
+  font-size:.76rem;font-weight:400;color:var(--m);
+  text-decoration:none;transition:color .2s
+}
+.fsoc:hover{color:var(--tx)}
+.fsoc svg{width:13px;height:13px}
+
+/* MODAL POLITIQUE */
+.pp-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(7,7,12,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease)
+}
+.pp-overlay.open{opacity:1;pointer-events:all}
+.pp-box{
+  background:var(--s1);border:1px solid var(--bd);border-radius:8px;
+  width:100%;max-width:680px;max-height:82vh;
+  display:flex;flex-direction:column;
+  transform:translateY(18px);transition:transform .35s var(--ease);
+}
+.pp-overlay.open .pp-box{transform:none}
+.pp-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:28px 36px 22px;border-bottom:1px solid var(--bd);flex-shrink:0
+}
+.pp-head h3{font-family:var(--F);font-size:1rem;font-weight:700;letter-spacing:.04em;color:var(--tx)}
+.pp-close{
+  background:none;border:none;cursor:pointer;padding:6px;
+  color:var(--m);transition:color .2s;line-height:1
+}
+.pp-close:hover{color:var(--tx)}
+.pp-close svg{width:16px;height:16px;display:block}
+.pp-body{overflow-y:auto;padding:32px 36px 36px;scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.pp-body::-webkit-scrollbar{width:4px}
+.pp-body::-webkit-scrollbar-track{background:transparent}
+.pp-body::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+.pp-date{font-size:.7rem;color:var(--d);margin-bottom:28px;font-family:var(--F);letter-spacing:.06em}
+.pp-body h4{
+  font-family:var(--F);font-size:.78rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ac);
+  margin:28px 0 10px
+}
+.pp-body h4:first-of-type{margin-top:0}
+.pp-body p{font-size:.88rem;font-weight:300;color:var(--m);line-height:1.8;margin-bottom:8px}
+.pp-body ul{padding-left:18px;margin-bottom:8px}
+.pp-body ul li{font-size:.88rem;font-weight:300;color:var(--m);line-height:1.8;margin-bottom:4px}
+.pp-body a{color:var(--ac);text-decoration:none}
+.pp-body a:hover{text-decoration:underline}
+
+/* SCROLL REVEAL */
+.rev{opacity:0;transform:translateY(22px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.rev.in{opacity:1;transform:none}
+.revs > *{opacity:0;transform:translateY(18px);transition:opacity .65s var(--ease),transform .65s var(--ease)}
+.revs.in > *:nth-child(1){opacity:1;transform:none;transition-delay:0ms}
+.revs.in > *:nth-child(2){opacity:1;transform:none;transition-delay:100ms}
+.revs.in > *:nth-child(3){opacity:1;transform:none;transition-delay:200ms}
+.revs.in > *:nth-child(4){opacity:1;transform:none;transition-delay:300ms}
+
+/* ANIMATIONS */
+@keyframes fadeD{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes sU{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fI{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+@keyframes sc{0%{opacity:0;transform:translateY(-6px)}40%{opacity:1}100%{opacity:0;transform:translateY(6px)}}
+
+/* RESPONSIVE */
+@media(max-width:1040px){
+  nav,#hero,#services,#process,#about,#cal,footer{padding-left:28px;padding-right:28px}
+  .nav-ul li:not(:last-child){display:none}
+  .sgrid{grid-template-columns:1fr}
+  .sc{border-right:none;border-bottom:1px solid var(--bd)}
+  .sc:last-child{border-bottom:none}
+  .pg{grid-template-columns:1fr;gap:52px}
+  .psticky{position:static}
+  .ag{grid-template-columns:1fr;gap:52px}
+}
+@media(max-width:600px){
+  h1{font-size:2.8rem}
+  .acts{flex-direction:column}
+  .bp,.bg{text-align:center}
+  .fi{flex-direction:column;align-items:flex-start;gap:14px}
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <svg class="logo-mark" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="1.5" y="1.5" width="19" height="19" rx="4" stroke="#AEFF47" stroke-width="1.4"/>
+      <path d="M7 7h5.5L7 15h8" stroke="#AEFF47" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="logo-word">ZELKAX</span>
+  </a>
+  <ul class="nav-ul">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Processus</a></li>
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#cal" class="ncta">Réserver →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="hero-in">
+    <p class="hero-tag">Automatisation & IA — Québec</p>
+    <h1>
+      <span class="hl"><span class="hi">Ce qui ralentit</span></span>
+      <span class="hl"><span class="hi">votre équipe —</span></span>
+      <span class="hl"><span class="hi">on l'automatise.</span></span>
+    </h1>
+    <p class="hero-sub">
+      ZELKAX conçoit des systèmes d'IA et d'automatisation sur mesure — intégrés à vos outils existants, maintenus par notre équipe.
+    </p>
+    <div class="acts">
+      <a href="#cal" class="bp">Réserver un appel gratuit →</a>
+      <a href="#services" class="bg">Voir les services</a>
+    </div>
+  </div>
+  <div class="hero-scr">
+    <div class="scr-line"></div>
+    <span>Défiler</span>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="sw">
+    <div class="sh">
+      <p class="eye rev">Services</p>
+      <h2 class="rev">Ce qu'on construit<br>pour vous.</h2>
+    </div>
+    <div class="sgrid revs">
+
+      <div class="sc">
+        <span class="sn">01</span>
+        <svg class="si" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="17" cy="17" r="5" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M17 5v4M17 25v4M5 17h4M25 17h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M9 9l2.7 2.7M22.3 22.3L25 25M25 9l-2.7 2.7M11.7 22.3L9 25" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <h3 class="st">Automatisation des flux</h3>
+        <p class="sd">Ce qui se répète, tourne seul. On identifie vos tâches manuelles et on construit les déclencheurs qui les exécutent — sans toucher à ce qui fonctionne déjà.</p>
+      </div>
+
+      <div class="sc">
+        <span class="sn">02</span>
+        <svg class="si" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="3" y="11" width="10" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/>
+          <rect x="21" y="11" width="10" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M13 17h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M18 14l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3 class="st">Intégration système</h3>
+        <p class="sd">Vos outils existent — ils ne se parlent pas. On les connecte pour que l'information circule sans ressaisie, sans friction, sans perte entre vos plateformes.</p>
+      </div>
+
+      <div class="sc">
+        <span class="sn">03</span>
+        <svg class="si" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="3" y="5" width="28" height="22" rx="3" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M9 21l4-7 4 5 3-3.5L25 21" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 11h6M9 14.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <h3 class="st">IA opérationnelle</h3>
+        <p class="sd">Extraction de documents, assistants internes, triage automatique. De l'IA calibrée sur votre contexte réel — pas sur un cas générique.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSUS -->
+<section id="process">
+  <div class="sw">
+    <div class="pg">
+      <div class="psticky">
+        <p class="eye rev">Processus</p>
+        <h2 class="rev">Simple.<br>Prévisible.<br>Sans surprise.</h2>
+      </div>
+      <div class="psteps revs">
+
+        <div class="step">
+          <span class="pnum">01</span>
+          <div>
+            <h3 class="ptitle">Appel de découverte</h3>
+            <p class="pdesc">On cartographie vos processus en 30 minutes. Pas de présentation — juste une conversation pour repérer les frictions et identifier les automatisations les plus utiles.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="pnum">02</span>
+          <div>
+            <h3 class="ptitle">Proposition précise</h3>
+            <p class="pdesc">Périmètre clair, prix fixe, délai réaliste. Vous savez exactement ce que vous obtenez avant de vous engager à quoi que ce soit.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="pnum">03</span>
+          <div>
+            <h3 class="ptitle">Déploiement & suivi</h3>
+            <p class="pdesc">Mise en place rapide, documentée, testée. ZELKAX reste disponible si vos besoins évoluent — un système bien construit s'adapte.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- À PROPOS -->
+<section id="about">
+  <div class="sw">
+    <div class="ag">
+      <div>
+        <p class="eye rev">À propos</p>
+        <h2 class="rev">Une agence québécoise,<br>pas une boîte noire.</h2>
+        <p class="abody rev">
+          <strong>ZELKAX est fondée par des développeurs.</strong> qui comprennent la réalité des affaires. On ne vend pas de technologie pour la technologie. On s'intéresse à votre réalité opérationnelle en premier. Les solutions viennent après.
+          <br/><br/>
+          Nos clients sont des professionnels indépendants et des PME qui veulent récupérer du temps et professionnaliser leurs opérations sans embaucher une équipe TI.
+        </p>
+      </div>
+      <div class="pills revs">
+        <div class="pill">
+          <p class="pname">Développement sur mesure</p>
+          <p class="pdsc">Développement sur mesure selon vos besoins, hébergé selon vos contraintes, maintenu par notre équipe.</p>
+        </div>
+        <div class="pill">
+          <p class="pname">Prix fixe</p>
+          <p class="pdsc">Périmètre défini dès le départ. Aucune surprise en cours de projet.</p>
+        </div>
+        <div class="pill">
+          <p class="pname">Partir de l'existant</p>
+          <p class="pdsc">On s'intègre à ce que vous avez déjà. Pas besoin de tout reconstruire. On travaille avec vos outils actuels — pas contre eux.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALENDRIER -->
+<section id="cal">
+  <div class="calh rev">
+    <h2 class="caltitle">30 minutes.<br><em>C'est tout.</em></h2>
+    <p class="calsub">Pas de pitch. On regarde ensemble si l'automatisation fait du sens pour votre contexte — et si oui, par où commencer.</p>
+  </div>
+  <div class="calwrap rev">
+    <div id="zelkax-cal"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fi">
+    <a href="#" class="flogo">
+      <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="19" height="19" rx="4" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M7 7h5.5L7 15h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      ZELKAX
+    </a>
+    <p class="fcopy">
+      © 2026 ZELKAX. Tous droits réservés.
+      <button class="fpp" id="openPP">Politique de confidentialité</button>
+    </p>
+    <a href="https://www.linkedin.com/in/steeve-dabire-b25168280/" target="_blank" rel="noopener noreferrer" class="fsoc">
+      <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      LinkedIn
+    </a>
+  </div>
+</footer>
+
+<!-- MODAL POLITIQUE DE CONFIDENTIALITÉ -->
+<div class="pp-overlay" id="ppOverlay" role="dialog" aria-modal="true" aria-labelledby="ppTitle">
+  <div class="pp-box">
+    <div class="pp-head">
+      <h3 id="ppTitle">Politique de confidentialité</h3>
+      <button class="pp-close" id="closePP" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="pp-body">
+      <p class="pp-date">Dernière mise à jour : juin 2026</p>
+
+      <h4>1. Introduction</h4>
+      <p>ZELKAX (« nous ») respecte votre vie privée. Cette politique explique comment nous traitons les informations lorsque vous visitez notre site <strong>zelkax.com</strong>.</p>
+
+      <h4>2. Données collectées</h4>
+      <p>Ce site ne contient aucun formulaire de contact ni champ de saisie. Nous ne collectons donc aucune information personnelle directement.</p>
+      <p>Des données de navigation anonymes (adresse IP, pages visitées, navigateur, durée de visite) peuvent être collectées automatiquement via des outils d'analyse d'audience, dans le but d'améliorer le site.</p>
+      <p>Si vous réservez un appel via le calendrier intégré (Cal.com), les informations que vous saisissez (nom, courriel) sont transmises directement à Cal.com et régies par leur propre politique de confidentialité.</p>
+
+      <h4>3. Utilisation des données</h4>
+      <p>Les données de navigation anonymes sont utilisées uniquement pour :</p>
+      <ul>
+        <li>Analyser l'utilisation du site et améliorer ses performances ;</li>
+        <li>Détecter d'éventuelles erreurs techniques.</li>
+      </ul>
+
+      <h4>4. Partage des données</h4>
+      <p>Nous ne vendons aucune donnée personnelle. Les données anonymes d'analyse peuvent être traitées par des prestataires tiers (hébergement, analytics) soumis à des obligations de confidentialité. Aucun partage commercial n'est effectué.</p>
+
+      <h4>5. Cookies</h4>
+      <p>Ce site peut utiliser des cookies techniques nécessaires à son bon fonctionnement, ainsi que des cookies d'analyse anonymes. Vous pouvez désactiver les cookies dans les paramètres de votre navigateur.</p>
+
+      <h4>6. Sécurité</h4>
+      <p>Des mesures techniques appropriées sont mises en œuvre pour protéger le site. Aucune transmission électronique n'est toutefois garantie à 100 % sécurisée.</p>
+
+      <h4>7. Modifications</h4>
+      <p>Cette politique peut être mise à jour à tout moment. La date en haut de page indique la version en vigueur.</p>
+
+      <h4>8. Contact</h4>
+      <p>Pour toute question relative à cette politique, contactez-nous à :<br>
+      <a href="mailto:steeve@zelkax.com">steeve@zelkax.com</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- CAL.COM EMBED -->
+<script type="text/javascript">
+(function(C,A,L){
+  let p=function(a,ar){a.q.push(ar)};
+  let d=C.document;
+  C.Cal=C.Cal||function(){
+    let cal=C.Cal,ar=arguments;
+    if(!cal.loaded){
+      cal.ns={};cal.q=cal.q||[];
+      d.head.appendChild(d.createElement("script")).src=A;
+      cal.loaded=true
+    }
+    if(ar[0]===L){
+      const api=function(){p(api,arguments)};
+      const ns=ar[1];api.q=api.q||[];
+      typeof ns==="string"?(cal.ns[ns]=api)&&p(api,ar):p(cal,ar);
+      return
+    }
+    p(cal,ar)
+  }
+})(window,"https://app.cal.com/embed/embed.js","init");
+Cal("init",{origin:"https://cal.com"});
+Cal("inline",{
+  elementOrSelector:"#zelkax-cal",
+  calLink:"steeve-rkvfp2/30min",
+  config:{layout:"month_view",theme:"dark"}
+});
+Cal("ui",{"hideEventTypeDetails":false,"layout":"month_view","theme":"dark"});
+</script>
+
+<script>
+// Scroll progress
+const prog=document.getElementById('prog');
+const navEl=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  prog.style.width=(window.scrollY/(h.scrollHeight-h.clientHeight)*100)+'%';
+  navEl.classList.toggle('on',window.scrollY>10);
+},{passive:true});
+
+// Reveal on scroll
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}
+  })
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rev,.revs').forEach(el=>io.observe(el));
+
+// Modal politique de confidentialité
+const ppOverlay=document.getElementById('ppOverlay');
+document.getElementById('openPP').addEventListener('click',()=>{
+  ppOverlay.classList.add('open');
+  document.body.style.overflow='hidden';
+});
+function closePP(){ppOverlay.classList.remove('open');document.body.style.overflow='';}
+document.getElementById('closePP').addEventListener('click',closePP);
+ppOverlay.addEventListener('click',e=>{if(e.target===ppOverlay)closePP();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePP();});
+
+// Smooth nav links
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}
+  })
+});
+</script>
+</body>
+</html>
